@@ -1,4 +1,4 @@
-const Game = require("../models/games");
+const Game = require("../models/Games");
 
 class GameRepository {
   async findAll() {

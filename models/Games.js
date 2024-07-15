@@ -13,6 +13,9 @@ const Games = sequelize.define("game", {
   price: {
     type: DataTypes.FLOAT,
     allowNull: false,
+    validate: {
+      min: 0,
+    },
   },
 });
 
