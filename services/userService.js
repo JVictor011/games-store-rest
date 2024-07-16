@@ -11,6 +11,10 @@ class UserService {
     return await this.userRepository.findByEmail(email);
   }
 
+  async getFindByUsername(username) {
+    return await this.userRepository.findByUsername(username);
+  }
+
   async createUser(data) {
     return await this.userRepository.create(data);
   }

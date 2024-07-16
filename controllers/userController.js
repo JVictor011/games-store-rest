@@ -50,6 +50,39 @@ class UserController {
       res.status(500).json({ error: err.message });
     }
   }
+
+  async register(req, res) {
+    try {
+      const { email, username, password } = req.params;
+
+      const getFindByEmail = await userService.getFindByEmail(email);
+      if (getFindByEmail) {
+        res.status(400).json({ error: "Email already registered" });
+      }
+
+      const usernameIsValid = await userService.getFindByUsername(username);
+      if (usernameIsValid) {
+        res.status(400).json({ error: "Username already taken" });
+      }
+
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(password, salt);
+
+      const user = await userService.createUser({
+        email,
+        username,
+        password: hashedPassword,
+      });
+
+      if (user) {
+        res.status(201).json({ message: "User registered successfully" });
+      } else {
+        res.status(500).json({ error: "Failed to register user" });
+      }
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
 }
 
 module.exports = new UserController();
