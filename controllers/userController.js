@@ -10,6 +10,25 @@ const userService = new UserService(userRepository);
 const JWTSecret = process.env.JWT_SECRET;
 
 class UserController {
+  static passwordValidation(password) {
+    const requirements = {
+      minLength: password.length >= 8,
+      lowerCase: /[a-z]/.test(password),
+      upperCase: /[A-Z]/.test(password),
+      digit: /\d/.test(password),
+      specialChar: /[@$!%*?&]/.test(password),
+    };
+
+    const unmetRequirements = Object.keys(requirements).filter(
+      (key) => !requirements[key]
+    );
+
+    return {
+      isValid: unmetRequirements.length === 0,
+      unmetRequirements,
+    };
+  }
+
   async authentication(req, res) {
     try {
       const { email, password } = req.body;
@@ -82,6 +101,12 @@ class UserController {
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
+  }
+
+  validatePassword(req, res) {
+    const { password } = req.body;
+    const validationResult = UserController.passwordValidation(password);
+    res.json(validationResult);
   }
 }
 
