@@ -7,6 +7,10 @@ class UserService {
     return await this.userRepository.findAll();
   }
 
+  async getUserById(id) {
+    return await this.userRepository.findById(id);
+  }
+
   async getFindByEmail(email) {
     return await this.userRepository.findByEmail(email);
   }
@@ -19,8 +23,8 @@ class UserService {
     return await this.userRepository.create(data);
   }
 
-  async updateUser(data) {
-    return await this.userRepository.update(data);
+  async updateUser(id, data) {
+    return await this.userRepository.update(id, data);
   }
 }
 

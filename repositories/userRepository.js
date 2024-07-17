@@ -9,6 +9,10 @@ class UserRepository {
     return await Users.create(data);
   }
 
+  async findById(id) {
+    return await Users.findByPk(id);
+  }
+
   async findByEmail(email) {
     return await Users.findOne({ where: { email } });
   }
@@ -17,8 +21,8 @@ class UserRepository {
     return await Users.findOne({ where: { username } });
   }
 
-  async update(data) {
-    const user = await this.findByEmail(data.email);
+  async update(id, data) {
+    const user = await this.findById(id);
     if (user) {
       return await user.update(data);
     }
